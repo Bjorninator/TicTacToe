@@ -23,11 +23,13 @@ public class Game implements Serializable {
             if(playerOneTurn){
                 playerOneTurn = false;
                 board[row][column] = TileState.CROSS;
+                movesPlayed++;
                return TileState.CROSS;
             }
             else{
                 playerOneTurn = true;
                 board[row][column] = TileState.CIRCLE;
+                movesPlayed++;
                 return TileState.CIRCLE;
             }
         }
@@ -75,6 +77,9 @@ public class Game implements Serializable {
             if(board[0][2] == board[1][1] && board[0][2] == board[2][0]){
                 return GameState.PLAYER_ONE;
             }
+        }
+        if(movesPlayed == 9){
+            return GameState.DRAW;
         }
 
         return GameState.IN_PROGRESS;

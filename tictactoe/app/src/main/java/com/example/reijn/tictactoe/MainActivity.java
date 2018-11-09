@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+    // create the buttons for memory management
     Button button1;
     Button button2;
     Button button3;
@@ -18,11 +19,14 @@ public class MainActivity extends AppCompatActivity {
     Button button8;
     Button button9;
 
+    // create the  objects for the game itself
     Game game;
     TileState state;
     GameState gamestate = GameState.IN_PROGRESS;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // create a new game and save the buttons in variables
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         button1 = (Button) findViewById(R.id.button11);
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     protected void onSaveInstanceState(Bundle outState) {
+        // save the text the buttons show for memory management
         super.onSaveInstanceState(outState);
         outState.putSerializable("Game", game);
         outState.putString("button1", button1.getText().toString());
@@ -54,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onRestoreInstanceState(Bundle inState) {
+
+        // Set the text for the saved text in the previous function
         super.onRestoreInstanceState(inState);
         button1.setText(inState.getString("button1"));
         button2.setText(inState.getString("button2"));
@@ -64,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         button7.setText(inState.getString("button7"));
         button8.setText(inState.getString("button8"));
         button9.setText(inState.getString("button9"));
+
+        // put the game object as it was and check if the player won
         game = (Game) inState.getSerializable("Game");
         if(game.gameOver == true){
             for(int i=2131165220; i <2131165229; i++ ){
@@ -74,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tileClicked(View view) {
+        // check which button is pressed and send it to the game choose function
         int id = view.getId();
         System.out.println(id);
         switch (id) {
@@ -96,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             case 2131165228:  state = game.choose(0, 0);
                 break;
         }
+        // change the button text to the appropriate symbol
         Button button = (Button) findViewById(id);
         switch(state) {
             case CROSS:
@@ -106,14 +117,15 @@ public class MainActivity extends AppCompatActivity {
                 button.setText("O");
                 gamestate = game.won();
                 break;
-            case INVALID:
-                // do something different
-                break;
         }
 
+        // check if someone has won the game
         if(gamestate != GameState.IN_PROGRESS) {
+
+            // if so display the vitory message and set gameover to true for memory management
             victory();
             game.gameOver = true;
+            // disable all the buttons
             for(int i=2131165220; i <2131165229; i++ ){
                 Button disable = (Button) findViewById(i);
                 disable.setEnabled(false);
@@ -122,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void victory(){
+        //display the text message when you win for the correct player
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setCancelable(true);
         builder.setTitle("Nice");
@@ -140,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void resetClicked(View view) {
+        // reset the entire grid to normal
         for(int i=2131165220; i <2131165229; i++ ){
             Button button = (Button) findViewById(i);
             button.setText("");

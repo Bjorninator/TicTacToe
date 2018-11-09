@@ -10,6 +10,8 @@ public class Game implements Serializable {
     public Boolean gameOver;
 
     public Game() {
+
+        // create the board
         board = new TileState[BOARD_SIZE][BOARD_SIZE];
         for(int i=0; i<BOARD_SIZE; i++)
             for(int j=0; j<BOARD_SIZE; j++)
@@ -19,14 +21,20 @@ public class Game implements Serializable {
         gameOver = false;
     }
     public TileState choose(int row, int column) {
+        //check if the the tile is blank
         if(board[row][column] == TileState.BLANK){
+            // if so check if it's player one his turn
             if(playerOneTurn){
+                // change the player and add the symbol to the tile
+                // add 1 to the moved plays for calculating draw
                 playerOneTurn = false;
                 board[row][column] = TileState.CROSS;
                 movesPlayed++;
                return TileState.CROSS;
             }
             else{
+                // change the player and add the symbol to the tile
+                // add 1 to the moved plays for calculating draw
                 playerOneTurn = true;
                 board[row][column] = TileState.CIRCLE;
                 movesPlayed++;
@@ -34,11 +42,13 @@ public class Game implements Serializable {
             }
         }
         else{
+            // return invalid when it's not blank
             return TileState.INVALID;
         }
 
     }
     public GameState won(){
+        // check if there are three symbols in a row for the winner
         for(int i=0; i<BOARD_SIZE; i++){
             if(board[i][0] == TileState.CIRCLE) {
                 if(board[i][0] == board[i][1] && board[i][0] == board[i][2]){
@@ -78,10 +88,12 @@ public class Game implements Serializable {
                 return GameState.PLAYER_ONE;
             }
         }
+        // check if it is a draw
         if(movesPlayed == 9){
             return GameState.DRAW;
         }
 
+        // return in progress when nobody won and it is not a draw
         return GameState.IN_PROGRESS;
     }
 
